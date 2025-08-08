@@ -1,0 +1,51 @@
+{
+  "expo": {
+    "name": "VUDUKA",
+    "slug": "VUDUKA",
+    "version": "1.0.0",
+    "newArchEnabled": true,
+    "orientation": "portrait",
+    "icon": "./app/assets/logo.png",
+    "userInterfaceStyle": "light",
+    "splash": {
+      "image": "./app/assets/splash_2.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#ffffff"
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true
+    },
+    "android": {
+      "permissions": [
+        "CAMERA_ROLL"
+      ],
+      "adaptiveIcon": {
+        "foregroundImage": "./app/assets/logo.png",
+        "backgroundColor": "#ffffff"
+      },
+      "package": "VUDUKA.android"
+    },
+    "web": {
+      "favicon": "./app/assets/logo.png"
+    },
+    "extra": {
+      "eas": {
+        "projectId": "a0107ab0-86d7-46d3-b4b2-3e18f29594c3"
+      }
+    },
+    "plugins": [
+      [
+        "expo-camera",
+        {
+          "cameraPermission": "Allow Vuduka to access your camera",
+          "microphonePermission": "Allow Vuduka to access your microphone",
+          "recordAudioAndroid": true
+        }
+      ],
+      "expo-router"
+    ]
+  }
+}

@@ -1,14 +1,38 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, Image, TouchableOpacity, TextInput ,Platform } from 'react-native';
+import React, { useRef, useEffect , useState } from 'react';
+import LottieView from 'lottie-react-native';
+import { View, Text, Image, TouchableOpacity, TextInput ,Platform , ActivityIndicator } from 'react-native';
 import Icon from 'react-native-vector-icons/Ionicons';
 import DateTimePicker from '@react-native-community/datetimepicker'; 
 import Voice from '@react-native-voice/voice';
+import { Audio } from 'expo-av';
+import { OpenAI } from 'openai';
+import { OPENAI_KEY } from '@env'
 
 
 function Home() {
   const [date, setDate] = useState(new Date());
   const [showDatePicker, setShowDatePicker] = useState(false);
   const [dateText, setDateText] = useState('Select date');
+  const [recording, setRecording] = useState(null);
+  const [isRecording, setIsRecording] = useState(false);
+  const [transcript, setTranscript] = useState('');
+  const [isTranscribing, setIsTranscribing] = useState(false);
+  const lottieRef = useRef(null);
+
+  const openai = new OpenAI({
+  apiKey: OPENAI_KEY,
+  });
+  
+  useEffect(() => {
+  if (!lottieRef.current) return;
+  if (isRecording) {
+    // play/loop the animation
+    lottieRef.current.play();
+  } else {
+    // stop and reset to first frame
+    lottieRef.current.reset();
+  }
+}, [isRecording]);
 
   const onChangeDate = (event, selectedDate) => {
     setShowDatePicker(Platform.OS === 'ios'); // Keep open on iOS, close on Android
@@ -28,58 +52,83 @@ function Home() {
     setShowDatePicker(true);
   };
 
-    // States for transcription and listening
-  const [isListening, setIsListening] = useState(false);
-  const [transcript, setTranscript] = useState('');
-
-  useEffect(() => {
-    Voice.onSpeechStart = () => {
-      setIsListening(true);
-    };
-    Voice.onSpeechResults = (event) => {
-      setTranscript(event.value[0]);
-      // You can call NLP here with event.value[0]
-      console.log('Final result:', event.value[0]);
-    };
-    Voice.onSpeechPartialResults = (event) => {
-      setTranscript(event.value[0]);
-      console.log('Partial result:', event.value[0]);
-      // Optionally do wake word detection here
-      if (event.value[0].toLowerCase().includes('upepo')) {
-        console.log('Wake word detected');
-        // Start actual command listening or confirm UI state
+    // 🔊 Play sound helper
+  const playSound = async (soundFile) => {
+    const { sound } = await Audio.Sound.createAsync(soundFile);
+    await sound.playAsync();
+    // Optionally unload after playing to free memory
+    sound.setOnPlaybackStatusUpdate((status) => {
+      if (status.didJustFinish) {
+        sound.unloadAsync();
       }
-    };
-    Voice.onSpeechEnd = () => {
-      setIsListening(false);
-    };
-    Voice.onSpeechError = (e) => {
-      console.error('Speech error:', e);
-      setIsListening(false);
-    };
-
-    return () => {
-      Voice.destroy().then(Voice.removeAllListeners);
-    };
-  }, []);
-
-  const startListening = async () => {
+    });
+  };
+  
+  const startRecording = async () => {
     try {
-      await Voice.start('en-US'); // or 'sw-KE' for Kiswahili if supported
-      setTranscript('');
-    } catch (e) {
-      console.error('Failed to start listening:', e);
+      await playSound(require('../assets/sounds/start.mp3'));
+      console.log('Requesting permissions..');
+      await Audio.requestPermissionsAsync();
+
+      console.log('Starting recording..');
+      await Audio.setAudioModeAsync({
+        allowsRecordingIOS: true,
+        playsInSilentModeIOS: true,
+      });
+
+      const { recording } = await Audio.Recording.createAsync(
+        Audio.RecordingOptionsPresets.HIGH_QUALITY
+      );
+
+      setRecording(recording);
+      setIsRecording(true);
+    } catch (err) {
+      console.error('Failed to start recording', err);
     }
   };
 
-  const stopListening = async () => {
+    const stopRecording = async () => {
+    console.log('Stopping recording..');
+    setIsRecording(false);
+    await recording.stopAndUnloadAsync();
+    const uri = recording.getURI();
+    console.log('Recording stopped and stored at', uri);
+    await playSound(require('../assets/sounds/start.mp3'));
+    setIsTranscribing(true); // Start spinner
+    
+    // Send to Whisper API
     try {
-      await Voice.stop();
-      setIsListening(false);
-    } catch (e) {
-      console.error('Failed to stop listening:', e);
+      const file = {
+        uri,
+        name: 'audio.m4a',
+        type: 'audio/m4a',
+      };
+
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('model', 'whisper-1');
+      formData.append("language", "en");
+
+      const response = await fetch('https://api.openai.com/v1/audio/transcriptions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${openai.apiKey}`,
+        },
+        body: formData,
+      });
+
+      const data = await response.json();
+      console.log('Transcription:', data.text);
+      setTranscript(data.text);
+    } catch (error) {
+      console.error('Whisper API error:', error);
+    }finally{
+      setIsTranscribing(false); // Stop spinner
     }
   };
+    
+
+
 
   return (
     <View className="flex-1 bg-white">
@@ -100,8 +149,8 @@ function Home() {
         </TouchableOpacity>
       </View>
 
-      {/* Search Section with Glassy Effect */}
-      <View className="mx-5 mt-4 p-5 rounded-lg bg-white backdrop-blur-md  ">
+      {/* Search Section  */}
+      <View className="mx-5 mt-4 p-4 rounded-lg bg-white backdrop-blur-md  ">
         {/* Origin Input */}
         <View className="mb-3">
           <Text className="text-gray-500 text-xs mb-1 ml-2">From</Text>
@@ -170,18 +219,36 @@ function Home() {
         <View className="flex-row space-x-3">
           <TouchableOpacity 
             onPress={() => console.log('Voice search pressed')}
-            className="flex-1 items-center justify-center rounded-lg py-3 bg-gray-100 "
+            className="flex-1 items-center justify-center rounded-lg py-3 bg-gray-100/50 "
           >
             <Icon name="search" size={16} color="#000" />
           </TouchableOpacity>
           <TouchableOpacity 
-            onPress={isListening ? stopListening : startListening}
+            onPress={isRecording ? stopRecording : startRecording}
             className="flex-3 bg-black rounded-lg p-3 items-center justify-center shadow-sm flex-row space-x-2"
           >
-            
-            <Icon name={isListening ? 'mic' : 'mic-outline'} size={24} color="white" />
+    {isRecording ? (
+    <LottieView
+      ref={lottieRef}
+      source={require('../assets/animations/rec-mic.json')}
+      autoPlay={false}        
+      loop={true}
+      style={{ width: 48, height: 48 }}
+    />
+  ) : (
+    <Icon name="mic-outline" size={24} color="white" />
+  )}
           </TouchableOpacity>
         </View>
+        <Text style={{ marginTop: 20, textAlign: 'center' }}>
+        {transcript || 'Press the mic to start speaking'}
+      </Text>
+        {isTranscribing && (
+        <View style={{ marginTop: 20, alignItems: 'center' }}>
+          <ActivityIndicator size="large" color="#000" />
+          <Text style={{ marginTop: 10 }}>Transcribing...</Text>
+        </View>
+      )}
       </View>
 
       {/* Rest of the content */}

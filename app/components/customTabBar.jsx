@@ -17,7 +17,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
   const routes = state.routes;
 
   return (
-    <StyledView className="absolute bottom-14 left-5 right-5 items-center z-10">
+    <StyledView className="absolute bottom-14  left-5 right-5 items-center z-10">
       <StyledView className="flex-row bg-zinc-100/50 backdrop-blur-md rounded-2xl px-4 py-3 shadow-md">
         {routes.map((route, index) => {
           const { options } = descriptors[route.key];
@@ -39,7 +39,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
           return (
             <StyledTouchable
               key={route.key}
-              className={`flex-1 items-center justify-center rounded-2xl px-4 py-2 mx-1 ${
+              className={`flex-1 items-center  justify-center rounded-2xl px-4 py-2 mx-1 ${
                 isFocused ? 'bg-black' : ''
               }`}
               onPress={onPress}

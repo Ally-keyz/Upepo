@@ -43,10 +43,6 @@
           "cameraPermission": "Allow Vuduka to access your camera",
           "microphonePermission": "Allow Vuduka to access your microphone",
           "recordAudioAndroid": true
-        },
-        "expo-audio",
-        {
-          "microphonePermission": "Allow $(PRODUCT_NAME) to access your microphone."
         }
       ],
       "expo-router"

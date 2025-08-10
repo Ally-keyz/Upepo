@@ -6,7 +6,7 @@ import { styled } from 'nativewind';
 const icons = {
   Home: 'home',
   Booking: 'qrcode',
-  Tickets: 'comment-alt',
+  Map: 'map',
   Profile: 'user-alt',
 };
 

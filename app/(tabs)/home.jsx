@@ -25,7 +25,7 @@ function Home() {
   const [origin, setOrigin] = useState('');
   const [destination, setDestination] = useState('');
   const dispatch = useDispatch();
-
+  
   const updateOrigin = (newOrigin) => {
   dispatch(setOrgina(newOrigin));
 };
@@ -33,11 +33,11 @@ function Home() {
  const updateDestination = (newDestination) => {
   dispatch(setDestinationa(newDestination));
 };
-
+  
   
   const handleSearch = async () => {
-
     navigation.navigate('Map', { origin, destination });
+    
   };
 
   const openai = new OpenAI({
@@ -175,8 +175,8 @@ function Home() {
       <View className="mx-5 mt-4 p-4 rounded-lg bg-white backdrop-blur-md  ">
         {/* Origin Input */}
         <View className="mb-3">
-          <Text className="text-gray-500 text-xs mb-1 ml-2">From</Text>
-          <View className="flex-row items-center bg-gray-50/70 rounded-lg px-3 py-2.5 ">
+          <Text className="text-gray-700 text-xs mb-1 ml-2">From</Text>
+          <View className="flex-row items-center border border-gray-200 bg-gray-50/70 rounded-xl px-3 py-2.5 ">
             <Icon name="location-outline" size={16} color="#6b7280" className="mr-2" />
             <TextInput
               onChangeText={(text)=> {
@@ -200,8 +200,8 @@ function Home() {
 
         {/* Destination Input */}
         <View className="mb-3">
-          <Text className="text-gray-500 text-xs mb-1 ml-2">To</Text>
-          <View className="flex-row items-center bg-gray-50/70 rounded-lg px-3 py-2.5 ">
+          <Text className="text-gray-700 text-xs  mb-1 ml-2">To</Text>
+          <View className="flex-row items-center border border-gray-200 bg-gray-50/70 rounded-xl px-3 py-2.5 ">
             <Icon name="navigate-outline" size={16} color="#6b7280" className="mr-2" />
             <TextInput
               onChangeText={(text)=>{ 
@@ -220,10 +220,10 @@ function Home() {
 
         {/* Date Input */}
         <View className="mb-4">
-          <Text className="text-gray-500 text-xs mb-1 ml-2">When</Text>
+          <Text className="text-gray-700 text-xs mb-1 ml-2">When</Text>
           <TouchableOpacity 
             onPress={showDatepicker}
-            className="flex-row items-center bg-gray-50/70 rounded-lg px-3 py-3 "
+            className="flex-row items-center border border-gray-200 bg-gray-50/70 rounded-xl px-3 py-5 "
           >
             <Icon name="calendar-outline" size={16} color="#6b7280" className="mr-2" />
             <Text className="flex-1 text-black text-sm">
@@ -248,25 +248,9 @@ function Home() {
         <View className="flex-row space-x-3">
           <TouchableOpacity 
             onPress={handleSearch}
-            className="flex-1 items-center justify-center rounded-lg py-3 bg-gray-100/50 "
+            className="flex-1 items-center justify-center rounded-xl py-3 bg-black/80 backdrop-blur-lg "
           >
-            <Icon name="search" size={16} color="#000" />
-          </TouchableOpacity>
-          <TouchableOpacity 
-            onPress={isRecording ? stopRecording : startRecording}
-            className="flex-3 bg-black rounded-lg p-3 items-center justify-center shadow-sm flex-row space-x-2"
-          >
-    {isRecording ? (
-    <LottieView
-      ref={lottieRef}
-      source={require('../assets/animations/rec-mic.json')}
-      autoPlay={false}        
-      loop={true}
-      style={{ width: 48, height: 48 }}
-    />
-  ) : (
-    <Icon name="mic-outline" size={24} color="white" />
-  )}
+            <Icon name="search" size={16} color="white" />
           </TouchableOpacity>
         </View>
         <Text style={{ marginTop: 20, textAlign: 'center' }}>
@@ -280,6 +264,25 @@ function Home() {
       )}
       </View>
       {/* Rest of the content */}
+<View style={{ position: 'absolute', bottom: 150, right: 20 }}>
+  <TouchableOpacity 
+    onPress={isRecording ? stopRecording : startRecording}
+    className="flex-3 bg-gray-100/50 rounded-2xl shadow-md backdrop-blur-lg p-3 items-center justify-center shadow-sm flex-row space-x-2"
+  >
+    {isRecording ? (
+      <LottieView
+        ref={lottieRef}
+        source={require('../assets/animations/rec-mic.json')}
+        autoPlay={false}        
+        loop={true}
+        style={{ width: 48, height: 48 }}
+      />
+    ) : (
+      <Icon name="mic-outline" size={24} color="black" />
+    )}
+  </TouchableOpacity>
+</View>
+
     </View>
   );
 }

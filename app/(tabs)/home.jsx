@@ -155,7 +155,7 @@ function Home() {
   return (
     <View className="flex-1 bg-white">
       {/* Header with Logo and Notification */}
-      <View className="flex-row items-center justify-between p-5">
+      <View className="flex-row items-center justify-between p-3">
         {/* Logo */}
         <Image
           source={require('../assets/logo.png')}
@@ -172,7 +172,7 @@ function Home() {
       </View>
 
       {/* Search Section  */}
-      <View className="mx-5 mt-4 p-4 rounded-lg bg-white backdrop-blur-md  ">
+      <View className="mx-5 mt-4 p-2 rounded-lg bg-white backdrop-blur-md  ">
         {/* Origin Input */}
         <View className="mb-3">
           <Text className="text-gray-700 text-xs mb-1 ml-2">From</Text>
@@ -226,7 +226,7 @@ function Home() {
             className="flex-row items-center border border-gray-200 bg-gray-50/70 rounded-xl px-3 py-5 "
           >
             <Icon name="calendar-outline" size={16} color="#6b7280" className="mr-2" />
-            <Text className="flex-1 text-black text-sm">
+            <Text className="flex-1 ml-2 text-black text-sm">
               {dateText}
             </Text>
             <Icon name="chevron-down" size={16} color="#9ca3af" />
@@ -248,9 +248,9 @@ function Home() {
         <View className="flex-row space-x-3">
           <TouchableOpacity 
             onPress={handleSearch}
-            className="flex-1 items-center justify-center rounded-xl py-3 bg-black/80 backdrop-blur-lg "
+            className="flex-1 items-center justify-center rounded-2xl py-5 bg-gray-200/70 backdrop-blur-lg "
           >
-            <Icon name="search" size={16} color="white" />
+            <Icon name="search" size={17} color="black" />
           </TouchableOpacity>
         </View>
         <Text style={{ marginTop: 20, textAlign: 'center' }}>

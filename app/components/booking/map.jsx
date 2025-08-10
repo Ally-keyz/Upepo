@@ -48,8 +48,8 @@ const Map = () => {
     }
   };
 
-  const originCoords = Coordinates[origin] || { latitude: -1.9441, longitude: 30.0619 };
-  const destinationCoords = Coordinates[destination] || { latitude: -1.2921, longitude: 36.8219 };
+  const originCoords = Coordinates[origin] || { latitude: -1.2921, longitude: 36.8219 } 
+  const destinationCoords = Coordinates[destination] || { latitude: -1.9441, longitude: 30.0619 };;
 
   return (
     <View className="flex-1 bg-white">
@@ -72,7 +72,7 @@ const Map = () => {
 
         <Polyline
           coordinates={[originCoords, destinationCoords]}
-          strokeColor="#237b0fff"
+          strokeColor="#000100ff"
           strokeWidth={4}
         />
       </MapView>
@@ -87,7 +87,7 @@ const Map = () => {
           {agenciesData.map((agency, index) => (
             <View 
               key={index} 
-              className="bg-white/80  backdrop-blur-md  rounded-2xl p-3 mr-4 w-[330px] h-[300px] shadow-lg border border-gray-100"
+              className="bg-white  backdrop-blur-md  rounded-2xl p-3 mr-4 w-[330px] h-[300px] shadow-lg border border-gray-100"
             >
               <View className="border-b border-gray-300 pb-2 mb-2">
                 <Text className="text-lg  text-gray-900">{agency.name}</Text>
@@ -110,14 +110,14 @@ const Map = () => {
                       key={i}
                       className={`py-2 px-3 rounded-lg mr-2 mb-2 ${
                         selectedHour[agency.name] === hour 
-                          ? 'bg-black/50' 
-                          : 'bg-white'
+                          ? 'bg-gray-100' 
+                          : 'bg-gray-100/30'
                       }`}
                       onPress={() => setSelectedHour({ ...selectedHour, [agency.name]: hour })}
                     >
                       <Text className={`text-center ${
                         selectedHour[agency.name] === hour 
-                          ? 'text-white font-bold' 
+                          ? 'text-black font-bold' 
                           : 'text-gray-800'
                       }`}>
                         {hour}
@@ -127,7 +127,7 @@ const Map = () => {
                 </View>
               </ScrollView>
 
-              <TouchableOpacity className="bg-white py-3 rounded-xl mt-2">
+              <TouchableOpacity className="bg-gray-100 py-3 rounded-xl mt-2">
                 <Text className="text-white text-black  text-center">Select Trip</Text>
               </TouchableOpacity>
             </View>

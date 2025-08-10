@@ -1,7 +1,9 @@
 import React from 'react';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import Home from './home';
+import Booking from './booking';
 import CustomTabBar from '../components/customTabBar';
+import Map from '../components/booking/map';
 
 const Tab = createBottomTabNavigator();
 
@@ -17,8 +19,9 @@ function TabNavigator() {
       />
       <Tab.Screen
         name="Booking"
-        component={Home}
+        component={Booking}
       />
+      <Tab.Screen name="Map" component={Map}  />
     </Tab.Navigator>
   );
 }

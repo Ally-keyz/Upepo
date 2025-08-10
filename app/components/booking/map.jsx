@@ -9,7 +9,7 @@ const Map = () => {
     const [userLocation, setUserLocation] = useState(null);
     const origin = useSelector((state) => state.origin);
     const destination = useSelector((state) => state.destination);
-
+    console.log("Origin:", origin , "Destination:" , destination);
 
     useEffect(() => {
         getUserLocation();
@@ -49,7 +49,7 @@ const Map = () => {
                     latitudeDelta: 0.015,
                     longitudeDelta: 0.0121,
                 }}
-            >
+                > 
                 {userLocation && (
                     <Marker
                         coordinate={{

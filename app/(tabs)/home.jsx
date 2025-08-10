@@ -7,6 +7,9 @@ import Voice from '@react-native-voice/voice';
 import { Audio } from 'expo-av';
 import { OpenAI } from 'openai';
 import { OPENAI_KEY } from '@env'
+import { useNavigation } from '@react-navigation/native';
+import { useDispatch } from 'react-redux';
+import { setOrgina , setDestinationa } from '../appSlice/appSlices';
 
 
 function Home() {
@@ -18,6 +21,24 @@ function Home() {
   const [transcript, setTranscript] = useState('');
   const [isTranscribing, setIsTranscribing] = useState(false);
   const lottieRef = useRef(null);
+  const navigation = useNavigation();
+  const [origin, setOrigin] = useState('');
+  const [destination, setDestination] = useState('');
+  const dispatch = useDispatch();
+
+  const updateOrigin = (newOrigin) => {
+  dispatch(setOrgina(newOrigin));
+};
+
+ const updateDestination = (newDestination) => {
+  dispatch(setDestinationa(newDestination));
+};
+
+  
+  const handleSearch = async () => {
+
+    navigation.navigate('Map', { origin, destination });
+  };
 
   const openai = new OpenAI({
   apiKey: OPENAI_KEY,
@@ -119,6 +140,7 @@ function Home() {
 
       const data = await response.json();
       console.log('Transcription:', data.text);
+      await playSound(require('../assets/sounds/start.mp3'));
       setTranscript(data.text);
     } catch (error) {
       console.error('Whisper API error:', error);
@@ -157,6 +179,10 @@ function Home() {
           <View className="flex-row items-center bg-gray-50/70 rounded-lg px-3 py-2.5 ">
             <Icon name="location-outline" size={16} color="#6b7280" className="mr-2" />
             <TextInput
+              onChangeText={(text)=> {
+                setOrigin(text)
+                    updateOrigin(text);
+              }}
               placeholder="Current location"
               placeholderTextColor="#9ca3af"
               className="flex-1 text-black text-sm"
@@ -178,6 +204,10 @@ function Home() {
           <View className="flex-row items-center bg-gray-50/70 rounded-lg px-3 py-2.5 ">
             <Icon name="navigate-outline" size={16} color="#6b7280" className="mr-2" />
             <TextInput
+              onChangeText={(text)=>{ 
+                setDestination(text)
+                updateDestination(text)
+              }}
               placeholder="Where to?"
               placeholderTextColor="#9ca3af"
               className="flex-1 text-black text-sm"
@@ -215,10 +245,9 @@ function Home() {
             />
           )}
         </View>
-
         <View className="flex-row space-x-3">
           <TouchableOpacity 
-            onPress={() => console.log('Voice search pressed')}
+            onPress={handleSearch}
             className="flex-1 items-center justify-center rounded-lg py-3 bg-gray-100/50 "
           >
             <Icon name="search" size={16} color="#000" />
@@ -250,7 +279,6 @@ function Home() {
         </View>
       )}
       </View>
-
       {/* Rest of the content */}
     </View>
   );

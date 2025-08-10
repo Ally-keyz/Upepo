@@ -18,7 +18,7 @@ const CustomTabBar = ({ state, descriptors, navigation }) => {
 
   return (
     <StyledView className="absolute bottom-14  left-5 right-5 items-center z-10">
-      <StyledView className="flex-row bg-zinc-100/50 backdrop-blur-md rounded-2xl px-4 py-3 shadow-md">
+      <StyledView className="flex-row bg-zinc-100/90 backdrop-blur-lg rounded-2xl px-4 py-3 shadow-md">
         {routes.map((route, index) => {
           const { options } = descriptors[route.key];
           const label = options.tabBarLabel || options.title || route.name;

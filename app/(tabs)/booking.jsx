@@ -42,7 +42,7 @@ function Booking() {
 
   return (
     <>
-      <Map />
+     
     </>
   );
 }

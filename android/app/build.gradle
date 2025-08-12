@@ -95,9 +95,9 @@ packagingOptions {
     buildToolsVersion rootProject.ext.buildToolsVersion
     compileSdk rootProject.ext.compileSdkVersion
 
-    namespace 'VUDUKA.android'
+    namespace 'Upepo.android'
     defaultConfig {
-        applicationId 'VUDUKA.android'
+        applicationId 'Upepo.android'
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1

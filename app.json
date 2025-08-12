@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "VUDUKA",
+    "name": "Upepo",
     "slug": "upepo",
     "version": "1.0.0",
     "newArchEnabled": true,
@@ -10,7 +10,7 @@
     "splash": {
       "image": "./app/assets/splash_2.png",
       "resizeMode": "cover",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#000000"
     },
     "assetBundlePatterns": [
       "**/*"
@@ -28,7 +28,7 @@
         "foregroundImage": "./app/assets/logo.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "VUDUKA.android"
+      "package": "Upepo.android"
     },
     "web": {
       "favicon": "./app/assets/logo.png"

@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "VUDUKA",
-    "slug": "VUDUKA",
+    "slug": "upepo",
     "version": "1.0.0",
     "newArchEnabled": true,
     "orientation": "portrait",
@@ -20,7 +20,9 @@
     },
     "android": {
       "permissions": [
-        "CAMERA_ROLL"
+        "CAMERA_ROLL",
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO"
       ],
       "adaptiveIcon": {
         "foregroundImage": "./app/assets/logo.png",
@@ -31,11 +33,6 @@
     "web": {
       "favicon": "./app/assets/logo.png"
     },
-    "extra": {
-      "eas": {
-        "projectId": "a0107ab0-86d7-46d3-b4b2-3e18f29594c3"
-      }
-    },
     "plugins": [
       [
         "expo-camera",
@@ -45,7 +42,21 @@
           "recordAudioAndroid": true
         }
       ],
-      "expo-router"
-    ]
+      "expo-router",
+      [
+        "@rnmapbox/maps",
+        {
+          "RNMapboxMapsImpl": "mapbox",
+          "RNMapboxMapsDownloadToken": "sk.eyJ1IjoiYWxwZS0wMSIsImEiOiJjbWU4YTdhMDkwN244MmlxeGVldWlkN3F4In0.VL_Fr65FxpRluhYYIu-pig"
+        }
+      ]
+    ],
+    "extra": {
+      "router": {},
+      "eas": {
+        "projectId": "06f522af-d012-4c0c-9931-82b1b8c53df5"
+      }
+    },
+    "owner": "manzi_alpe"
   }
 }

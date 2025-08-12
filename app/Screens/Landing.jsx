@@ -36,15 +36,7 @@ const Landing = () => {
               height: 200,
               width: 200
             }} className='' source={
-              require('../assets/logo.png')} />
-
-        </View>
-        <View>
-          <TouchableOpacity >
-            <Text className='text-center text-psemibold text-3xl mt-5 p-5' style={{ color: '#032B44' }}>
-              Welcome
-            </Text>
-          </TouchableOpacity>
+              require('../assets/upepoLogo.png')} />
         </View>
       </SafeAreaView>
 
@@ -67,7 +59,7 @@ export default Landing
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: 'white',
+    backgroundColor: 'black',
     justifyContent: 'center',
     alignItems: 'center',
     justifyContent: 'space-evenly',
